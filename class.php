@@ -110,3 +110,51 @@ class ClientePessoaJuridica extends Cliente{
 		"<p>O cnpj da empresa é: {$this->cnpj}</p>";
 	}
 }
+
+/* Fim Pessoa fisica e juridica */
+
+// Trabalhando com classes abstratas
+
+abstract class Cheque{
+	public $valor;
+	public $tipo;
+
+	function __construct($valor,$tipo){
+		$this->valor = $valor;
+		$this->tipo = $tipo;
+	}
+	function verValor(){
+		return "<p>Valor do cheque é R$ {$this->valor} ele é do tipo {$this->tipo}</p>";
+	}
+// converter para real
+	function real($valor){
+		return number_format($valor,'2',',','.'); 
+	}
+}
+
+class ChequeComum extends Cheque {
+	function calcularJuros(){
+		$this->valor = $this->valor * 5.25;
+		//converter o valor usando a function real
+		$this->valor = parent::real($this->valor);
+		// imprime o valor já convertido
+		return "valor do cheque com juro é : R$ {$this->valor}";
+	}
+}
+
+class ChequeEspecial extends Cheque{
+	function calcularJuros(){
+		$this->valor = $this->valor * 10.25;
+		$this->tipo = $this->tipo;
+		$this->valor = parent::real($this->valor);
+		return "O valor do cheque especial é : R$ {$this->valor}" .
+		 " ele é do tipo {$this->tipo}";
+	}
+}
+
+//Fim Trabalhando com classes abstratas
+
+// Métodos abstratas
+
+
+
