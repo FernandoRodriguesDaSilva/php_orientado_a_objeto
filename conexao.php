@@ -11,7 +11,6 @@
 		$conn->getConn();
 
 		var_dump($conn);
-
 	?>
 </body>
 </html>
