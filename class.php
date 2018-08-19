@@ -155,7 +155,7 @@ class ChequeEspecial extends Cheque{
 	}
 }
 
-//Fim Trabalhando com classes abstratas
+///////////////////// Fim Trabalhando com classes abstratas ////////////
 
 // Interface
 
@@ -168,7 +168,7 @@ interface ICurso{
 class CursoGraduacao implements ICurso {
 	public $NomeDisciplina;
 	public $NomeProfessor;
-// indicar os metodos abstratos
+//////////////////// indicar os metodos abstratos ////////////////////
 	public function disciplina($NomeDisciplina){
 		$this->NomeDisciplina = $NomeDisciplina;
 		return "A Disciplina escolhida é: {$this->NomeDisciplina}<br>";
@@ -197,7 +197,7 @@ class CursoPosGraduacao implements ICurso{
 
 // fim  Interface
 
-// atributos e metodos estaticos
+/////////////////////// atributos e metodos estaticos //////////////////
 class Disciplina {
 	public $aluno = "Fernando";
 	public $notatrabalho;
@@ -228,7 +228,7 @@ class Disciplina {
 	}
 
 }
-// Fim atributos e metodos estaticos
+///////////////// Fim atributos e metodos estaticos /////////////
 
 
 
@@ -256,9 +256,9 @@ class Funcionario{
 		$this->salario = $this->ValidarSalario($this->salario);
 		return "o funcionario {$this->nome} tem o salário de R$ {$this->salario}";
 	}
-	
-
 }
+
+// Atributos e metodos private
 
 class FuncionarioPrivate{
 	public  $nome;
@@ -285,6 +285,65 @@ class FuncionarioPrivate{
 	}
 }
 
+//////////////////// fim  Atributos e metodos private /////////////////
 
+// Atributos e metodos private
 
+class FuncionarioProtected{
+	public $nome;
+	private $salario;
+	protected $bonus;
 
+	function setNome($nome){
+		$this->nome = $nome;
+	}
+
+	function setSalario($salario){
+		$this->salario = $salario;
+	}
+
+	public function verSalario(){
+		return "<p>o funcionario {$this->nome} tem o salário de R$ {$this->salario} e o bônus é {$this->bonus};</p>";
+	}
+   // class exclusiva
+	private function ValidarSalario(){
+		if(is_numeric($salario)and($salario > 0)){
+			return $this->salario = number_format($salario, '2',',','.');
+		}else {
+			die("Salario invalido");
+		}
+	}
+
+	protected function bonus($bonus){
+		$this->bonus = $bonus;
+	}
+}
+
+class Bonus extends FuncionarioProtected{
+	public function verSalario(){
+		parent::bonus(2500);
+		return parent::verSalario();
+	}
+}
+
+// conexao com banco de dados
+
+class Conn{
+	public static $Host = "localhost";
+	public static $User = "root";
+	public static $Pass = "root";
+	public static $Dbname = "game";
+
+	private static $Connect = null;
+
+	private static function Conectar(){
+		self::$Connect = new PDO('mysql:host='. self::$Host .
+		 ';dbname'. self::$Dbname, self::$User, self::$Pass);
+
+		return self::$Connect;
+	}
+
+	public function getConn(){
+		return self::Conectar();
+	}
+}
