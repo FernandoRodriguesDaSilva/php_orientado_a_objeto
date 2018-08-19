@@ -123,11 +123,14 @@ abstract class Cheque{
 		$this->valor = $valor;
 		$this->tipo = $tipo;
 	}
+// As classes filhas herdam essa function
+	abstract function calcularJuros();
+
 	function verValor(){
 		return "<p>Valor do cheque é R$ {$this->valor} ele é do tipo {$this->tipo}</p>";
 	}
-// converter para real
-	function real($valor){
+// converter para real só pode ter na class pai porque tem final
+	final function real($valor){
 		return number_format($valor,'2',',','.'); 
 	}
 }
@@ -148,13 +151,140 @@ class ChequeEspecial extends Cheque{
 		$this->tipo = $this->tipo;
 		$this->valor = parent::real($this->valor);
 		return "O valor do cheque especial é : R$ {$this->valor}" .
-		 " ele é do tipo {$this->tipo}";
+		" ele é do tipo {$this->tipo}";
 	}
 }
 
 //Fim Trabalhando com classes abstratas
 
-// Métodos abstratas
+// Interface
+
+interface ICurso{
+	public function disciplina($NomeDisciplina);
+
+	public function professor($NomeProfessor);
+}
+				// indicar para usar interface
+class CursoGraduacao implements ICurso {
+	public $NomeDisciplina;
+	public $NomeProfessor;
+// indicar os metodos abstratos
+	public function disciplina($NomeDisciplina){
+		$this->NomeDisciplina = $NomeDisciplina;
+		return "A Disciplina escolhida é: {$this->NomeDisciplina}<br>";
+	}
+	public function professor($NomeProfessor){
+		$this->NomeProfessor = $NomeProfessor;
+		return "Professor: {$this->NomeProfessor}";
+	}
+}
+
+class CursoPosGraduacao implements ICurso{
+
+	public $NomeDisciplina;
+	public $NomeProfessor;
+
+	public function disciplina($NomeDisciplina){ 
+		$this->NomeDisciplina = $NomeDisciplina;
+		return "A Disciplina escolhida é: {$this->NomeDisciplina}<br>";
+	}
+
+	public function professor($NomeProfessor){ 
+		$this->NomeProfessor = $NomeProfessor;
+		return "Professor: {$this->NomeProfessor}";
+	}
+}
+
+// fim  Interface
+
+// atributos e metodos estaticos
+class Disciplina {
+	public $aluno = "Fernando";
+	public $notatrabalho;
+	public $notaprova;
+	public static $media;
+
+	function __construct($aluno,$notatrabalho,$notaprova){
+		$this->aluno = $aluno;
+		$this->notaprova = $notaprova;
+		$this->notatrabalho = $notatrabalho;
+		self::$media = $this->notaprova + $this->notatrabalho;
+	}
+// atributo estatico 
+	function situacao(){
+		if(self::$media >= 7){
+			return "O aluno {$this->nome} teve " . self::$media . ", com essa nota ele foi aprovado";
+		}else {
+			return "O aluno {$this->nome} teve " .self::$media . ", então ele foi reprovado";
+		}
+	}
+// metodo static não aceita $this (self não faz parte do objeto)
+	static function situacaoAluno(){
+		if(self::$media >= 7){
+			return "O aluno teve " . self::$media . ", com essa nota ele foi aprovado";
+		}else {
+			return "O aluno teve " .self::$media . ", então ele foi reprovado";
+		}
+	}
+
+}
+// Fim atributos e metodos estaticos
+
+
+
+// Atributos e metodos public
+class Funcionario{
+	public $nome;
+	public $salario;
+
+	function setNome($nome){
+		$this->nome = $nome;
+	}
+	function setSalario($salario){
+		$this->salario = $salario;
+	}
+	// Formatando o valor do salario
+	public function ValidarSalario($salario){
+		if(is_numeric($salario)and($salario > 0)){
+			return $this->salario = number_format($salario, '2',',','.');
+		}else {
+			die("Salario invalido");
+		}
+	}
+
+	public function verSalario(){
+		$this->salario = $this->ValidarSalario($this->salario);
+		return "o funcionario {$this->nome} tem o salário de R$ {$this->salario}";
+	}
+	
+
+}
+
+class FuncionarioPrivate{
+	public  $nome;
+	private  $salario;
+
+	function setNome($nome){
+		$this->nome = $nome;
+	}
+
+	function setSalario($salario){
+		$this->salario = $salario;
+	}
+
+	public function verSalario(){
+		return "<p>o funcionario {$this->nome} tem o salário de R$ {$this->salario};</p>";
+	}
+   // class exclusiva
+	private function ValidarSalario(){
+		if(is_numeric($salario)and($salario > 0)){
+			return $this->salario = number_format($salario, '2',',','.');
+		}else {
+			die("Salario invalido");
+		}
+	}
+}
+
 
 
 
