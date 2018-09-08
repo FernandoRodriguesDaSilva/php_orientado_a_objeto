@@ -1,0 +1,13 @@
+create database if not exists selke;
+
+create table if not exists usuarios(
+id int auto_increment not null primary key,
+nome varchar(220),
+email varchar(220)not null,
+usuario varchar(120)not null,
+senha varchar(220)not null,
+foto varchar(120),
+created datetime,
+modified datetime not null
+)default character set utf8 default collate utf8_general_ci;
+
